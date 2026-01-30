@@ -34,5 +34,8 @@
     "save": "Save",
     "update_success": "Todo updated successfully",
     "delete_success": "Todo deleted successfully"
+  },
+  "app": {
+    "title": "Todo appka"
   }
 }
