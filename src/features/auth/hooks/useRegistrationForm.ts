@@ -1,11 +1,15 @@
 import {useForm} from 'react-hook-form';
 import {useNavigate} from 'react-router-dom';
 import {yupResolver} from '@hookform/resolvers/yup';
-import {registerUser} from '../../todos/services/authApi';
-import {AuthFormValues, authSchema} from '../schema';
+import {authSchema} from '../schema';
+import {registerUser} from '../services/authApi';
+import {toast} from 'react-toastify';
+import {useTranslation} from 'react-i18next';
+import {AuthFormValues} from '../types';
 
 export const useRegistrationForm = () => {
   const navigate = useNavigate();
+  const {t} = useTranslation();
 
   const form = useForm<AuthFormValues>({
     resolver: yupResolver(authSchema),
@@ -16,10 +20,10 @@ export const useRegistrationForm = () => {
     try {
       await registerUser(data);
       navigate('/login');
-    } catch (e) {
-      form.setError('root', {
-        message: 'Registration failed',
-      });
+    } catch (error) {
+      toast.error(String(error));
+    } finally {
+      toast.success(t('auth.registration_success'));
     }
   });
 

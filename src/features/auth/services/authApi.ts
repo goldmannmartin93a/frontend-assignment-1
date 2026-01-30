@@ -1,14 +1,6 @@
+import {AuthRequest, LoginResponse} from '../types';
+
 const API_URL = 'http://localhost:3001';
-
-type AuthRequest = {
-  username: string;
-  password: string;
-};
-
-type LoginResponse = {
-  accessToken: string;
-  refreshToken: string;
-};
 
 export const login = async (data: AuthRequest): Promise<LoginResponse> => {
   const res = await fetch(`${API_URL}/api/login`, {
@@ -17,12 +9,13 @@ export const login = async (data: AuthRequest): Promise<LoginResponse> => {
     body: JSON.stringify(data),
   });
 
+  const result = await res.json();
+
   if (!res.ok) {
-    const error = await res.json();
-    throw new Error(error?.error ?? 'Login failed');
+    throw new Error(result?.error ?? 'Login failed');
   }
 
-  return res.json();
+  return result;
 };
 
 export const getMe = async (accessToken: string) => {
@@ -32,11 +25,13 @@ export const getMe = async (accessToken: string) => {
     },
   });
 
+  const result = await res.json();
+
   if (!res.ok) {
-    throw new Error('Unauthorized');
+    throw new Error(result?.error ?? 'Unauthorized');
   }
 
-  return res.json();
+  return result;
 };
 
 export const registerUser = async (data: AuthRequest) => {
@@ -46,9 +41,11 @@ export const registerUser = async (data: AuthRequest) => {
     body: JSON.stringify(data),
   });
 
+  const result = await res.json();
+
   if (!res.ok) {
-    throw new Error('Registration failed');
+    throw new Error(result?.error ?? 'Registration failed');
   }
 
-  return res.json();
+  return result;
 };

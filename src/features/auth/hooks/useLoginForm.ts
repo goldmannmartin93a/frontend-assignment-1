@@ -2,7 +2,9 @@ import {useForm} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {useNavigate} from 'react-router-dom';
 import {useAuth} from '../AuthContext';
-import {AuthFormValues, authSchema} from '../schema';
+import {authSchema} from '../schema';
+import {toast} from 'react-toastify';
+import {AuthFormValues} from '../types';
 
 export const useLoginForm = () => {
   const {login} = useAuth();
@@ -17,10 +19,8 @@ export const useLoginForm = () => {
     try {
       await login(data);
       navigate('/todos');
-    } catch (e) {
-      form.setError('root', {
-        message: 'Invalid username or password',
-      });
+    } catch (error) {
+      toast.error(String(error));
     }
   });
 

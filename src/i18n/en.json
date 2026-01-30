@@ -13,7 +13,8 @@
     "createOne": "Create one here",
     "submit_login": "Login",
     "submit_registration": "Register",
-    "registration": "Registration"
+    "registration": "Registration",
+    "registration_success": "Registration successful"
   },
   "app.title": "Carvago Frontend Assignment",
   "app.description": "Assignment in React.js for developers who want to join our team.",

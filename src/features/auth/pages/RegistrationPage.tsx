@@ -15,7 +15,7 @@ const RegistrationPage = () => {
           <IconButton
             aria-label="Back to login"
             children={<FiArrowLeft />}
-            variant="outline"
+            variant="ghost"
             onClick={() => navigate('/login')}
           />
           <Heading size="md">{t('auth.registration')}</Heading>

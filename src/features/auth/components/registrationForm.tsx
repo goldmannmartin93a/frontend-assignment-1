@@ -11,7 +11,7 @@ export const RegistrationForm = () => {
     onSubmit,
     formState: {errors},
   } = useRegistrationForm();
-  console.log(errors);
+
   return (
     <form onSubmit={onSubmit}>
       <Stack>

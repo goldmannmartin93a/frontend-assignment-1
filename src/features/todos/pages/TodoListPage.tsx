@@ -1,92 +1,103 @@
 import {useState} from 'react';
-import {
-  Flex,
-  Box,
-  Heading,
-  Input,
-  Button,
-  HStack,
-  VStack,
-  IconButton,
-  Text,
-} from '@chakra-ui/react';
-import {FiArrowLeft} from 'react-icons/fi';
 import {useNavigate} from 'react-router-dom';
 
-type Todo = {
-  id: number;
-  text: string;
-  completed: boolean;
-};
+import {useTodos} from '../hooks/useTodos';
+import {useCreateTodo} from '../hooks/useCreateTodo';
+import {useDeleteTodo} from '../hooks/useDeleteTodo';
+import {useToggleTodoCompletion} from '../hooks/useToggleTodoCompletion';
+
+import TodoSection from '../components/TodoSection';
+import TodoListLayout from '../components/TodoListLayout';
+import AddTodoInput from '../components/AddTodoInput';
+import TodoListHeader from '../components/TodoListHeader';
+import {TodoResponse} from '../types';
+import {Box, Button, Text} from '@chakra-ui/react';
+import {useAuth} from '../../auth/AuthContext';
 
 const TodoListPage = () => {
-  const [todos, setTodos] = useState<Todo[]>([]);
-  const [value, setValue] = useState('');
   const navigate = useNavigate();
 
-  const addTodo = () => {
-    if (!value.trim()) return;
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
 
-    setTodos([...todos, {id: Date.now(), text: value, completed: false}]);
-    setValue('');
+  const {todos, loading, refetch} = useTodos();
+  const {create} = useCreateTodo();
+  const {remove} = useDeleteTodo();
+  const {complete, incomplete} = useToggleTodoCompletion();
+
+  const {logout} = useAuth();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
   };
 
-  const toggleTodo = (id: number) => {
-    setTodos((todos) =>
-      todos.map((todo) => (todo.id === id ? {...todo, completed: !todo.completed} : todo))
-    );
+  const addTodo = async () => {
+    if (!title.trim()) return;
+
+    await create({
+      title,
+      description,
+    });
+
+    setTitle('');
+    setDescription('');
+    await refetch();
   };
 
-  const deleteTodo = (id: number) => {
-    setTodos((todos) => todos.filter((todo) => todo.id !== id));
+  const toggleTodo = async (id: string, next: boolean) => {
+    next ? await complete(id) : await incomplete(id);
+    await refetch();
   };
+
+  const deleteTodo = async (id: string) => {
+    await remove(id);
+    await refetch();
+  };
+
+  const todoList = todos.filter((t: TodoResponse) => !t.completed);
+  const completedList = todos.filter((t: TodoResponse) => t.completed);
 
   return (
-    <Flex minH="100vh" align="center" justify="center" bg="gray.50">
-      <Box p={8} bg="white" rounded="md" shadow="md" w="sm">
-        <HStack mb={6}>
-          <IconButton
-            aria-label="Back to login"
-            children={<FiArrowLeft />}
-            variant="outline"
-            onClick={() => navigate('/login')}
-          />
-          <Heading size="md">Todos</Heading>
-        </HStack>
+    <TodoListLayout>
+      <TodoListHeader onAdd={addTodo} />
 
-        <HStack mb={4}>
-          <Input
-            placeholder="Add a new todo..."
-            value={value}
-            onChange={(e) => setValue(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && addTodo()}
-          />
-          <Button colorScheme="teal" onClick={addTodo}>
-            Add
-          </Button>
-        </HStack>
-        <VStack align="stretch">
-          {todos.length === 0 && (
-            <Text color="gray.400" textAlign="center">
-              No todos yet
-            </Text>
-          )}
+      <AddTodoInput
+        title={title}
+        description={description}
+        onTitleChange={setTitle}
+        onDescriptionChange={setDescription}
+        onSubmit={addTodo}
+      />
 
-          {todos.map((todo) => (
-            <HStack key={todo.id} p={2} borderWidth="1px" borderRadius="md" justify="space-between">
-              {todo.text}
-              <IconButton
-                aria-label="Delete todo"
-                size="sm"
-                colorScheme="red"
-                variant="ghost"
-                onClick={() => deleteTodo(todo.id)}
-              />
-            </HStack>
-          ))}
-        </VStack>
+      {!loading && todos.length === 0 && (
+        <Text color="gray.400" textAlign="center">
+          No tasks yet
+        </Text>
+      )}
+
+      <TodoSection
+        title="To-do"
+        todos={todoList}
+        onToggle={toggleTodo}
+        onDelete={deleteTodo}
+        onNavigate={navigate}
+      />
+
+      <TodoSection
+        title="Completed"
+        todos={completedList}
+        completed
+        onToggle={toggleTodo}
+        onDelete={deleteTodo}
+        onNavigate={navigate}
+      />
+      <Box position="absolute" bottom={4} right={4}>
+        <Button colorScheme="red" variant="outline" size="sm" onClick={handleLogout}>
+          Logout
+        </Button>
       </Box>
-    </Flex>
+    </TodoListLayout>
   );
 };
 
