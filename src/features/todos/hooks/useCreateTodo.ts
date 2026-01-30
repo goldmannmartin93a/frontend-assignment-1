@@ -1,4 +1,4 @@
-import {createTodo, CreateTodoRequest} from '../services/authApi';
+import {createTodo, CreateTodoRequest} from '../services/todoApi';
 import {useState} from 'react';
 import {useAuth} from '../../auth/AuthContext';
 import {toast} from 'react-toastify';

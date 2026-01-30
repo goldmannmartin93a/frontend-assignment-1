@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import {markTodoAsComplete, markTodoAsIncomplete} from '../services/authApi';
+import {markTodoAsComplete, markTodoAsIncomplete} from '../services/todoApi';
 import {useAuth} from '../../auth/AuthContext';
 import {toast} from 'react-toastify';
 

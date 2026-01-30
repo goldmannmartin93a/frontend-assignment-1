@@ -32,10 +32,12 @@
     "mark_complete": "Mark as completed",
     "back_to_list": "Back to list",
     "save": "Save",
+    "create_success": "Todo created successfully",
     "update_success": "Todo updated successfully",
     "delete_success": "Todo deleted successfully"
   },
   "app": {
-    "title": "Todo appka"
+    "title": "Todo appka",
+    "description": "A simple todo app"
   }
 }

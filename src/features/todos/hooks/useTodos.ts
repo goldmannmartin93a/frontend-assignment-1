@@ -1,11 +1,12 @@
 import {useEffect, useState} from 'react';
-import {getTodos} from '../services/authApi';
+import {getTodos} from '../services/todoApi';
 import {useAuth} from '../../auth/AuthContext';
 import {toast} from 'react-toastify';
+import {TodoResponse} from '../types';
 
 export const useTodos = () => {
   const {accessToken} = useAuth();
-  const [data, setData] = useState<any[]>([]);
+  const [data, setData] = useState<TodoResponse[]>([]);
   const [loading, setLoading] = useState(false);
 
   const fetchTodos = async () => {
@@ -15,7 +16,7 @@ export const useTodos = () => {
 
     try {
       const res = await getTodos(accessToken);
-      setData(res.todos as any[]);
+      setData(res.todos);
     } catch (error) {
       toast.error(String(error));
     } finally {

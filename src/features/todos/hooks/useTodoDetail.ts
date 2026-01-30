@@ -1,11 +1,12 @@
 import {useEffect, useState} from 'react';
-import {getTodoDetail} from '../services/authApi';
+import {getTodoDetail} from '../services/todoApi';
 import {useAuth} from '../../auth/AuthContext';
 import {toast} from 'react-toastify';
+import {TodoResponse} from '../types';
 
 export const useTodoDetail = (id: string) => {
   const {accessToken} = useAuth();
-  const [todo, setTodo] = useState<any>(null);
+  const [todo, setTodo] = useState<TodoResponse | null>(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {

@@ -1,9 +1,10 @@
 import {VStack, Text, Box} from '@chakra-ui/react';
 import {TodoItem} from './TodoItem';
+import {TodoResponse} from '../types';
 
 type Props = {
   title: string;
-  todos: any[];
+  todos: TodoResponse[];
   completed?: boolean;
   onToggle: (id: string, next: boolean) => void;
   onDelete: (id: string) => void;

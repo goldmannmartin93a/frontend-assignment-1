@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import {CreateTodoRequest, updateTodo} from '../services/authApi';
+import {CreateTodoRequest, updateTodo} from '../services/todoApi';
 import {useAuth} from '../../auth/AuthContext';
 import {toast} from 'react-toastify';
 import {useTranslation} from 'react-i18next';
@@ -14,11 +14,12 @@ export const useUpdateTodo = () => {
 
     setLoading(true);
     try {
-      return await updateTodo(accessToken, id, data);
+      const result = await updateTodo(accessToken, id, data);
+      toast.success(t('todos.update_success'));
+      return result;
     } catch (error) {
       toast.error(String(error));
     } finally {
-      toast.success(t('todos.update_success'));
       setLoading(false);
     }
   };

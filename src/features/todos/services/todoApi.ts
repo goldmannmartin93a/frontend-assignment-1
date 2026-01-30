@@ -1,8 +1,13 @@
-const API_URL = 'http://localhost:3001';
+import {API_URL} from '../../../utils/constants';
+import {TodoResponse} from '../types';
 
 export type CreateTodoRequest = {
   title: string;
   description: string;
+};
+
+export type TodoListResponse = {
+  todos: TodoResponse[];
 };
 
 const authHeaders = (accessToken: string) => ({
@@ -23,7 +28,7 @@ const parseResponse = async (res: Response) => {
   }
 };
 
-export const getTodos = async (accessToken: string) => {
+export const getTodos = async (accessToken: string): Promise<TodoListResponse> => {
   const res = await fetch(`${API_URL}/api/todo/list`, {
     headers: authHeaders(accessToken),
   });
@@ -34,10 +39,13 @@ export const getTodos = async (accessToken: string) => {
     throw new Error(result?.error ?? 'Failed to fetch todos');
   }
 
-  return result;
+  return result as TodoListResponse;
 };
 
-export const getTodoDetail = async (accessToken: string, id: string) => {
+export const getTodoDetail = async (
+  accessToken: string,
+  id: string
+): Promise<TodoResponse> => {
   const res = await fetch(`${API_URL}/api/todo/${id}`, {
     headers: authHeaders(accessToken),
   });
@@ -48,7 +56,7 @@ export const getTodoDetail = async (accessToken: string, id: string) => {
     throw new Error(result?.error ?? 'Failed to fetch todo');
   }
 
-  return result;
+  return result as TodoResponse;
 };
 
 export const createTodo = async (accessToken: string, data: CreateTodoRequest) => {
@@ -82,7 +90,7 @@ export const updateTodo = async (accessToken: string, id: string, data: CreateTo
 
   if (!res.ok) {
     const text = await res.text();
-    throw new Error(text || 'Failed to mark todo incomplete');
+    throw new Error(text || 'Failed to update todo');
   }
 };
 

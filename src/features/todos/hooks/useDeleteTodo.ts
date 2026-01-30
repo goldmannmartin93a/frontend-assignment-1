@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import {deleteTodo} from '../services/authApi';
+import {deleteTodo} from '../services/todoApi';
 import {useAuth} from '../../auth/AuthContext';
 import {toast} from 'react-toastify';
 import {useTranslation} from 'react-i18next';
@@ -15,10 +15,10 @@ export const useDeleteTodo = () => {
     setLoading(true);
     try {
       await deleteTodo(accessToken, id);
+      toast.success(t('todos.delete_success'));
     } catch (error) {
       toast.error(String(error));
     } finally {
-      toast.success(t('todos.delete_success'));
       setLoading(false);
     }
   };
