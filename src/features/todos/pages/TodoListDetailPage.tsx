@@ -18,10 +18,12 @@ import {useTodoDetail} from '../hooks/useTodoDetail';
 import {useUpdateTodo} from '../hooks/useUpdateTodo';
 import {useDeleteTodo} from '../hooks/useDeleteTodo';
 import {useToggleTodoCompletion} from '../hooks/useToggleTodoCompletion';
+import {useTranslation} from 'react-i18next';
 
 const TodoDetailPage = () => {
   const {id} = useParams<{id: string}>();
   const navigate = useNavigate();
+  const {t} = useTranslation();
 
   const {todo, loading} = useTodoDetail(id!);
   const {update} = useUpdateTodo();
@@ -40,13 +42,15 @@ const TodoDetailPage = () => {
     }
   }, [todo]);
 
-  if (loading || !todo) {
+  if (loading) {
     return (
       <Flex justify="center" py={20}>
         <Spinner />
       </Flex>
     );
   }
+
+  if (!todo) return;
 
   const save = async () => {
     await update(todo.id, {title, description});
@@ -62,7 +66,7 @@ const TodoDetailPage = () => {
       } else {
         await incomplete(todo.id);
       }
-    } catch (e) {
+    } catch {
       setCompleted(!next);
     }
   };
@@ -76,7 +80,7 @@ const TodoDetailPage = () => {
     <Flex justify="center" py={10} bg="gray.50" minH="100vh">
       <Box bg="white" w="full" maxW="3xl" p={8} rounded="xl" shadow="sm">
         <Stack>
-          <Heading size="lg">Todo Detail</Heading>
+          <Heading size="lg">{t('todos.titleDetail')}</Heading>
 
           <Input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Title" />
 
@@ -99,22 +103,22 @@ const TodoDetailPage = () => {
               <Checkbox.Indicator />
             </Checkbox.Control>
             <Checkbox.Label>
-              <Text>{todo.completed ? 'Completed' : 'Mark as completed'}</Text>
+              <Text>{todo.completed ? t('todos.completed') : t('todos.mark_complete')}</Text>
             </Checkbox.Label>
           </Checkbox.Root>
 
           <HStack justify="space-between" pt={4}>
             <Button variant="ghost" onClick={() => navigate('/todos')}>
-              Back
+              {t('todos.back_to_list')}
             </Button>
 
             <HStack>
               <Button colorScheme="red" variant="outline" onClick={deleteTodo}>
-                Delete
+                {t('todos.delete')}
               </Button>
 
               <Button colorScheme="blue" onClick={save}>
-                Save
+                {t('todos.save')}
               </Button>
             </HStack>
           </HStack>

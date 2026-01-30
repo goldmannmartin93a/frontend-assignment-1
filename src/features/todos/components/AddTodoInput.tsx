@@ -1,4 +1,5 @@
-import {VStack, Input} from '@chakra-ui/react';
+import {VStack, Input, Textarea} from '@chakra-ui/react';
+import {useTranslation} from 'react-i18next';
 
 type Props = {
   title: string;
@@ -14,23 +15,27 @@ const AddTodoInput = ({
   onTitleChange,
   onDescriptionChange,
   onSubmit,
-}: Props) => (
-  <VStack mb={6}>
-    <Input
-      placeholder="What needs to be done?"
-      value={title}
-      onChange={(e) => onTitleChange(e.target.value)}
-      onKeyDown={(e) => e.key === 'Enter' && onSubmit()}
-    />
+}: Props) => {
+  const {t} = useTranslation();
 
-    <Input
-      placeholder="Description"
-      value={description}
-      onChange={(e) => onDescriptionChange(e.target.value)}
-      onKeyDown={(e) => e.key === 'Enter' && onSubmit()}
-      fontSize="sm"
-    />
-  </VStack>
-);
+  return (
+    <VStack mb={6}>
+      <Input
+        placeholder={t('todos.todo_placeholder')}
+        value={title}
+        onChange={(e) => onTitleChange(e.target.value)}
+        onKeyDown={(e) => e.key === 'Enter' && onSubmit()}
+      />
+
+      <Textarea
+        value={description}
+        onChange={(e) => onDescriptionChange(e.target.value)}
+        onKeyDown={(e) => e.key === 'Enter' && onSubmit()}
+        placeholder={t('todos.todo_description_placeholder')}
+        rows={6}
+      />
+    </VStack>
+  );
+};
 
 export default AddTodoInput;

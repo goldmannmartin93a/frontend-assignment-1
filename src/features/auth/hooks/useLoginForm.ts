@@ -5,10 +5,12 @@ import {useAuth} from '../AuthContext';
 import {authSchema} from '../schema';
 import {toast} from 'react-toastify';
 import {AuthFormValues} from '../types';
+import {useTranslation} from 'react-i18next';
 
 export const useLoginForm = () => {
   const {login} = useAuth();
   const navigate = useNavigate();
+  const {t} = useTranslation();
 
   const form = useForm<AuthFormValues>({
     resolver: yupResolver(authSchema),
@@ -19,6 +21,7 @@ export const useLoginForm = () => {
     try {
       await login(data);
       navigate('/todos');
+      toast.success(t('auth.login_success'));
     } catch (error) {
       toast.error(String(error));
     }

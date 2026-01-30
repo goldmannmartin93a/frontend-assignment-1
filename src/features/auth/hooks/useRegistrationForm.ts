@@ -20,10 +20,9 @@ export const useRegistrationForm = () => {
     try {
       await registerUser(data);
       navigate('/login');
+      toast.success(t('auth.registration_success'));
     } catch (error) {
       toast.error(String(error));
-    } finally {
-      toast.success(t('auth.registration_success'));
     }
   });
 

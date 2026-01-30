@@ -13,14 +13,16 @@ import TodoListHeader from '../components/TodoListHeader';
 import {TodoResponse} from '../types';
 import {Box, Button, Text} from '@chakra-ui/react';
 import {useAuth} from '../../auth/AuthContext';
+import {useTranslation} from 'react-i18next';
 
 const TodoListPage = () => {
   const navigate = useNavigate();
+  const {t} = useTranslation();
 
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
 
-  const {todos, loading, refetch} = useTodos();
+  const {todos, refetch} = useTodos();
   const {create} = useCreateTodo();
   const {remove} = useDeleteTodo();
   const {complete, incomplete} = useToggleTodoCompletion();
@@ -60,7 +62,7 @@ const TodoListPage = () => {
 
   return (
     <TodoListLayout>
-      <TodoListHeader onAdd={addTodo} />
+      <TodoListHeader onAdd={addTodo} disabled={!title.trim()} />
 
       <AddTodoInput
         title={title}
@@ -70,14 +72,14 @@ const TodoListPage = () => {
         onSubmit={addTodo}
       />
 
-      {!loading && todos.length === 0 && (
+      {todos.length === 0 && (
         <Text color="gray.400" textAlign="center">
-          No tasks yet
+          {t('todos.no_todos')}
         </Text>
       )}
 
       <TodoSection
-        title="To-do"
+        title={t('todos.to_do')}
         todos={todoList}
         onToggle={toggleTodo}
         onDelete={deleteTodo}
@@ -85,7 +87,7 @@ const TodoListPage = () => {
       />
 
       <TodoSection
-        title="Completed"
+        title={t('todos.completed')}
         todos={completedList}
         completed
         onToggle={toggleTodo}
@@ -94,7 +96,7 @@ const TodoListPage = () => {
       />
       <Box position="absolute" bottom={4} right={4}>
         <Button colorScheme="red" variant="outline" size="sm" onClick={handleLogout}>
-          Logout
+          {t('auth.logout')}
         </Button>
       </Box>
     </TodoListLayout>

@@ -16,12 +16,12 @@ export const useCreateTodo = () => {
     setLoading(true);
 
     try {
-      return await createTodo(accessToken, data);
+      await createTodo(accessToken, data);
+      toast.success(t('todos.create_success'));
     } catch (error) {
       toast.error(String(error));
     } finally {
       setLoading(false);
-      toast.success(t('todos.create_success'));
     }
   };
 

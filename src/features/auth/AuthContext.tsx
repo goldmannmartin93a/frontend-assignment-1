@@ -1,11 +1,23 @@
 import {createContext, useContext, useEffect, useState, ReactNode, JSX} from 'react';
 import {login as loginApi, getMe} from './services/authApi';
-import {AuthContextType, User} from './types';
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 type AuthProviderProps = {
   children: ReactNode;
+};
+
+export type User = {
+  id: string;
+  username: string;
+  createdAt: string;
+};
+
+export type AuthContextType = {
+  user: User | null;
+  accessToken: string | null;
+  login: (data: {username: string; password: string}) => Promise<void>;
+  logout: () => void;
 };
 
 export const AuthProvider = ({children}: AuthProviderProps): JSX.Element => {

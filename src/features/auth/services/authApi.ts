@@ -1,8 +1,7 @@
-import {AuthRequest, LoginResponse} from '../types';
+import {API_URL} from '../../../utils/constants';
+import {AuthFormValues, LoginResponse} from '../types';
 
-const API_URL = 'http://localhost:3001';
-
-export const login = async (data: AuthRequest): Promise<LoginResponse> => {
+export const login = async (data: AuthFormValues): Promise<LoginResponse> => {
   const res = await fetch(`${API_URL}/api/login`, {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
@@ -34,7 +33,7 @@ export const getMe = async (accessToken: string) => {
   return result;
 };
 
-export const registerUser = async (data: AuthRequest) => {
+export const registerUser = async (data: AuthFormValues) => {
   const res = await fetch(`${API_URL}/api/register`, {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},

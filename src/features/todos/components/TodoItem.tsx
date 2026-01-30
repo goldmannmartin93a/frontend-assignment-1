@@ -1,6 +1,8 @@
 import {HStack, VStack, Text, IconButton, Checkbox} from '@chakra-ui/react';
 import {FiTrash2} from 'react-icons/fi';
 import {TodoResponse} from '../types';
+import {formatLocalDate} from '../helpers';
+import {useTranslation} from 'react-i18next';
 
 type Props = {
   todo: TodoResponse;
@@ -11,7 +13,7 @@ type Props = {
 };
 
 export const TodoItem = ({todo, completed, onToggle, onDelete, onClick}: Props) => {
-  const createdAt = new Date(todo.createdAt).toLocaleDateString();
+  const {t} = useTranslation();
 
   return (
     <HStack
@@ -34,7 +36,6 @@ export const TodoItem = ({todo, completed, onToggle, onDelete, onClick}: Props) 
         </Checkbox.Root>
 
         <VStack align="start">
-          {/* Title */}
           <Text
             cursor="pointer"
             fontWeight="medium"
@@ -45,16 +46,14 @@ export const TodoItem = ({todo, completed, onToggle, onDelete, onClick}: Props) 
             {todo.title}
           </Text>
 
-          {/* Description */}
           {todo.description && (
             <Text fontSize="sm" color="gray.500">
               {todo.description}
             </Text>
           )}
 
-          {/* Date */}
           <Text fontSize="xs" color="gray.400">
-            Created {createdAt}
+            {t('todos.created_at', {date: formatLocalDate(todo.createdAt)})}
           </Text>
         </VStack>
       </HStack>

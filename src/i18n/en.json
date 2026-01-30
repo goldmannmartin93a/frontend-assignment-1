@@ -6,18 +6,33 @@
     "password": "Password",
     "passwordPlaceholder": "Enter your password",
     "submit": "Login",
-    "emailRequired": "Email is required",
-    "emailInvalid": "Email is invalid",
+    "usernameRequired": "Username is required",
     "passwordRequired": "Password is required",
     "noAccount": "Don't have an account?",
     "createOne": "Create one here",
     "submit_login": "Login",
     "submit_registration": "Register",
     "registration": "Registration",
-    "registration_success": "Registration successful"
+    "registration_success": "Registration successful",
+    "login_success": "Login successful",
+    "logout": "Logout"
   },
-  "app.title": "Carvago Frontend Assignment",
-  "app.description": "Assignment in React.js for developers who want to join our team.",
-  "welcome.message": "Welcome to Carvago Front-End Assignment",
-  "welcome.link": "see API docs"
+  "todos": {
+    "add_todo": "Add Todo",
+    "todo_placeholder": "What needs to be done?",
+    "todo_description_placeholder": "What is it about?",
+    "due_date": "Due Date",
+    "delete": "Delete",
+    "created_at": "Created at {{date}}",
+    "title": "Hello {{user}}, here are your todos",
+    "no_todos": "You have no todos yet",
+    "to_do": "Todo",
+    "completed": "Completed",
+    "titleDetail": "Todo detail",
+    "mark_complete": "Mark as completed",
+    "back_to_list": "Back to list",
+    "save": "Save",
+    "update_success": "Todo updated successfully",
+    "delete_success": "Todo deleted successfully"
+  }
 }
